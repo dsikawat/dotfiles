@@ -1,0 +1,80 @@
+_odin() {
+	case ${COMP_CWORD} in
+		1) COMPREPLY=($(compgen -W "server os network dns dhcp phone printer embedded physical-site puppet changelog entity"		-- ${COMP_WORDS[COMP_CWORD]}));;
+		2) case ${COMP_WORDS[COMP_CWORD-1]} in
+			server)			COMPREPLY=($(compgen -W "add update list remove rename interface autoprov"			-- ${COMP_WORDS[COMP_CWORD]}));;
+			os)			COMPREPLY=($(compgen -W "add remove list"							-- ${COMP_WORDS[COMP_CWORD]}));;
+			network)		COMPREPLY=($(compgen -W "add list remove rename set unset ip vlan ip-address-domain"		-- ${COMP_WORDS[COMP_CWORD]}));;
+			dns)			COMPREPLY=($(compgen -W "search address a txt sshfp hinfo ptr cname ns mx srv soa domain"	-- ${COMP_WORDS[COMP_CWORD]}));;
+			dhcp)			COMPREPLY=($(compgen -W "class range option instance"						-- ${COMP_WORDS[COMP_CWORD]}));;
+			phone|printer|embedded)	COMPREPLY=($(compgen -W "add update list remove rename"						-- ${COMP_WORDS[COMP_CWORD]}));;
+			physical-site)		COMPREPLY=($(compgen -W "add list remove associate dissociate"					-- ${COMP_WORDS[COMP_CWORD]}));;
+			puppet)			COMPREPLY=($(compgen -W "assign unassign show list rename remove copy"				-- ${COMP_WORDS[COMP_CWORD]}));;
+			changelog)		COMPREPLY=($(compgen -W "search"								-- ${COMP_WORDS[COMP_CWORD]}));;
+			entity)			COMPREPLY=($(compgen -W "search attribute"							-- ${COMP_WORDS[COMP_CWORD]}));;
+		   esac;;
+		3) case ${COMP_WORDS[COMP_CWORD-2]} in
+			server)
+				case ${COMP_WORDS[COMP_CWORD-1]} in
+					interface)		COMPREPLY=($(compgen -W "add update remove rename"				-- ${COMP_WORDS[COMP_CWORD]}));;
+					autoprov)		COMPREPLY=($(compgen -W "reset status extend forcelocalboot"			-- ${COMP_WORDS[COMP_CWORD]}));;
+					*)			COMPREPLY=($(compgen -W "--help"						-- ${COMP_WORDS[COMP_CWORD]}));;
+				esac;;
+			network)
+				case ${COMP_WORDS[COMP_CWORD-1]} in
+					set)			COMPREPLY=($(compgen -W "gateway description mtu"				-- ${COMP_WORDS[COMP_CWORD]}));;
+					unset)			COMPREPLY=($(compgen -W "gateway description"					-- ${COMP_WORDS[COMP_CWORD]}));;
+					ip)			COMPREPLY=($(compgen -W "list next-free"					-- ${COMP_WORDS[COMP_CWORD]}));;
+					vlan|ip-address-domain)	COMPREPLY=($(compgen -W "list remove add"					-- ${COMP_WORDS[COMP_CWORD]}));;
+					*)			COMPREPLY=($(compgen -W "--help"						-- ${COMP_WORDS[COMP_CWORD]}));;
+				esac;;
+			dns)
+				case ${COMP_WORDS[COMP_CWORD-1]} in
+					search)  		COMPREPLY=($(compgen -W "all a txt sshfp hinfo ptr cname ns mx srv soa"		-- ${COMP_WORDS[COMP_CWORD]}));;
+					domain) 		COMPREPLY=($(compgen -W "add remove list"					-- ${COMP_WORDS[COMP_CWORD]}));;
+					address|a|txt|sshfp|hinfo|ptr|cname|ns|mx|srv|soa) COMPREPLY=($(compgen -W "add remove update"		-- ${COMP_WORDS[COMP_CWORD]}));;
+				esac;;
+			dhcp)
+				case ${COMP_WORDS[COMP_CWORD-1]} in
+					class)			COMPREPLY=($(compgen -W "set unset"						-- ${COMP_WORDS[COMP_CWORD]}));;
+					range|option|instance)	COMPREPLY=($(compgen -W "list remove add"					-- ${COMP_WORDS[COMP_CWORD]}));;
+				esac;;
+			physical-site)
+				case ${COMP_WORDS[COMP_CWORD-1]} in
+					associate|dissociate)	COMPREPLY=($(compgen -W "network domain dhcpd-instance"				-- ${COMP_WORDS[COMP_CWORD]}));;
+					*)			COMPREPLY=($(compgen -W "--help"						-- ${COMP_WORDS[COMP_CWORD]}));;
+				esac;;
+			puppet)
+				case ${COMP_WORDS[COMP_CWORD-1]} in
+					show)			COMPREPLY=($(compgen -W "class classdef host attribute os" 			-- ${COMP_WORDS[COMP_CWORD]}));;
+					*)			COMPREPLY=($(compgen -W "--help"						-- ${COMP_WORDS[COMP_CWORD]}));;
+				esac;;
+			entity)
+				case ${COMP_WORDS[COMP_CWORD-1]} in
+					search)			COMPREPLY=($(compgen -W "all"				 			-- ${COMP_WORDS[COMP_CWORD]}));;
+					attribute)		COMPREPLY=($(compgen -W "define redefine undefine set unset get list"		-- ${COMP_WORDS[COMP_CWORD]}));;
+				esac;;
+			*)	COMPREPLY=($(compgen -W "--help" -- ${COMP_WORDS[COMP_CWORD]}));;
+		   esac;;
+		4) case ${COMP_WORDS[COMP_CWORD-1]} in
+			--help) ;;
+			*)	COMPREPLY=($(compgen -W "--help" -- ${COMP_WORDS[COMP_CWORD]}));;
+		   esac;;
+	esac
+}
+
+complete -F _odin odin
+
+_netsh() {
+	if [ -r /proj/systems/network/var/netminer/nodelist.csv ]; then
+		COMPREPLY=($(compgen -W "$(cat /proj/systems/network/var/netminer/nodelist.csv | perl -pe 's/,.*\n/\ /')" -- ${COMP_WORDS[COMP_CWORD]}))
+	fi
+}
+
+complete -F _netsh netsh
+
+_ssh() {
+	COMPREPLY=($(compgen -W "$(host-stability | perl -pe 's/=.*\n/\ /')" -- ${COMP_WORDS[COMP_CWORD]}))
+}
+
+complete -F _ssh ssh

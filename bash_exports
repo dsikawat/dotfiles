@@ -1,0 +1,14 @@
+export PS_FORMAT=user,pid,ppid,pgid,sid,tty,time,args
+export HISTSIZE=5000
+export HISTFILESIZE=5000
+export HISTFILE=${HOME}/.bash_history
+export HISTCONTROL=ignoredups:erasedups
+export HISTIGNORE="history*"
+export VISUAL=vim
+export EDITOR=vim
+export NC_M4=/u/sikawat/repos/cvs/network/lib/m4
+export NYCU=sikawat@king.nyc.deshaw.com:/u/sikawat
+export DRU=sikawat@king.dr.deshaw.com:/u/sikawat
+export HYDU=sikawat@king.hyd.deshaw.com:/u/sikawat
+export LONU=sikawat@king.lon.deshaw.com:/u/sikawat
+export LATESTPY27BIN=/usr/local/python/python-2.7/latest/bin
